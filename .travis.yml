@@ -1,0 +1,25 @@
+#Continuous integration trough travis.
+#configuration is specific to this project architecure
+language: node_js
+node_js:
+  - 12
+#trusty is an instance of linux where our project will be launch
+dist: trusty
+services:
+  - mongodb
+  - redis-server
+env:
+  #changing the env variables for the production env. Secrets variables like google id or cookie key are set on travis.com
+  - NODE_ENV=ci SKIP_PREFLIGHT_CHECK=true MONGODB_URI='mongodb://127.0.0.1:27017/blog_ci' PORT=3000 REDIS_PORT='redis://127.0.0.1:6379'
+cache:
+  directories:
+    - node_modules
+    - client/node_modules
+install:
+  - npm install
+  - npm run build
+script:
+  #nohup is for 'no hang up', for executing other command without stop the running server
+  - nohup npm run start & 
+  - sleep 3
+  - npm run test
