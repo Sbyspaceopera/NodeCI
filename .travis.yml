@@ -11,6 +11,7 @@ services:
 env:
   #changing the env variables for the production env. Secrets variables like google id or cookie key are set on travis.com
   - NODE_ENV=ci SKIP_PREFLIGHT_CHECK=true MONGODB_URI='mongodb://127.0.0.1:27017/blog_ci' PORT=3000 REDIS_PORT='redis://127.0.0.1:6379'
+#For speeding up the npm install phase. node_modules are must be set in the cache
 cache:
   directories:
     - node_modules
